@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, watch, ref } from 'vue';
 import WelcomeItem from './components/Header.vue';
-
+import WinItem from './components/winComponent.vue';
 
 let activeInputs = [];
 let rows = [];
@@ -88,8 +88,14 @@ async function setInputsStyle(userWord) {
   } 
   
   if (userWord === secretWord) {
-    userWin();
+    setTimeout(() => {
+      userWin();
+    }, 2100);
   }
+}
+
+async function userWin(){
+  win.value = true;
 }
 
 async function changeActiveInputs(){
@@ -125,8 +131,8 @@ function handleLetterInput(letter) {
     if (input.value === '') {
       input.value = letter.toUpperCase();
 
-      input.classList.remove('pop'); // resetta in caso di inserimento rapido
-      void input.offsetWidth;         // forza il reflow (trucco per riattivare l'animazione)
+      input.classList.remove('pop'); 
+      void input.offsetWidth;      
       input.classList.add('pop');
 
       if (input.nextElementSibling) input.nextElementSibling.focus();
@@ -200,6 +206,8 @@ onMounted(() => {
   <header>
     <WelcomeItem align="center"/>
   </header>
+
+  <WinItem v-if="win" :parola="secretWord"/>
 
   <main>
         <div class="rows-container">
@@ -290,7 +298,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-    @media (max-width: 1200px) {
+    @media (max-width: 564px) {
       input[type="text"]{
           color: var(--light-color);
           width: 50px;
@@ -318,7 +326,7 @@ onMounted(() => {
       }
 
       .keyboard{
-          width: 90%;
+          width: 95%;
           height: 200px;
           display: flex;
           flex-direction: column;
@@ -336,6 +344,53 @@ onMounted(() => {
         align-self: center;
         justify-self: center;
       }
+    } 
 
+    @media (min-width: 564px) and (max-width: 1200px) {
+      input[type="text"]{
+          color: var(--light-color);
+          width: 55px;
+          height: 55px;
+          border-radius: 8px;
+          margin: 0 5px;
+          font-size: 35px;
+          line-height: 60px;
+          text-align: center;
+          text-transform: uppercase;
+          background-color: var(--cells-color);
+          border: 2px solid var(--lightgray-color);
+          caret-color: transparent;
+          pointer-events: none;
+      }
+
+      .key{
+        flex: 1 1 0;
+        max-width: 110px;
+        height: 40px;
+        margin: 0px 4px;
+        border-radius: 4px;
+        border: none;
+        font-size: 17px;
+      }
+
+      .keyboard{
+          width: 75%;
+          height: 200px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+          margin: auto;
+          gap: 10px;
+      }
+
+      .keyboard-row {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-self: center;
+        justify-self: center;
+      }
     } 
 </style>
