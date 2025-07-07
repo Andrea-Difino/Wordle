@@ -187,6 +187,9 @@ onMounted(() => {
     key.addEventListener('click', (e) => {
       handleLetterInput(e.target.innerText);
     });
+    key.addEventListener('touch', (e) => {
+      handleLetterInput(e.target.innerText);
+    });
   });
 });
 
@@ -257,8 +260,8 @@ onMounted(() => {
                 <button class="key">O</button>
                 <button class="key">M</button>
                 <button class="key">P</button>
-                <button class="key">X</button>
-                <button class="key">V</button>
+                
+                
             </div>
             <div class="keyboard-row">
                 <button class="key">A</button>
@@ -269,25 +272,70 @@ onMounted(() => {
                 <button class="key">J</button>
                 <button class="key">K</button>
                 <button class="key">L</button>
-                <button class="key">E'</button>
-                <button class="key">U'</button>
-                <button class="key">O'</button>
-                <button class="key">A'</button>
+                <button class="key">V</button>
+                <button class="key">Z</button>
+                <button class="key">X</button>
             </div>
             <div class="keyboard-row">
-                <button class="key enter" style="width: 80px;" @click="enter = true">ENTER</button>
+                <button class="key enter" style="width: 80px; padding: 0px 15px" @click="enter = true">Enter</button>
                 <button class="key">C</button>
                 <button class="key">I</button>
                 <button class="key">F</button>
                 <button class="key">G</button>
                 <button class="key">H</button>
-                <button class="key">Z</button>
-                <button class="key back" style="width: fit-content; padding: 0px 15px" @click="backspace = true">BACKSPACE</button>
+                <button class="key back" style="width: fit-content; padding: 0px 12px" @click="backspace = true">Back</button>
             </div>
         </div>
     </main>
 </template>
 
 <style scoped>
+    @media (max-width: 1200px) {
+      input[type="text"]{
+          color: var(--light-color);
+          width: 50px;
+          height: 50px;
+          border-radius: 8px;
+          margin: 0 5px;
+          font-size: 35px;
+          line-height: 60px;
+          text-align: center;
+          text-transform: uppercase;
+          background-color: var(--cells-color);
+          border: 2px solid var(--lightgray-color);
+          caret-color: transparent;
+          pointer-events: none;
+      }
 
+      .key{
+        flex: 1 1 0;
+        max-width: 70px;
+        height: 30px;
+        margin: 0px 2px;
+        border-radius: 4px;
+        border: none;
+        font-size: 17px;
+      }
+
+      .keyboard{
+          width: 90%;
+          height: 200px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          align-items: center;
+          margin: auto;
+          gap: 10px;
+      }
+
+      .keyboard-row {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-self: center;
+        justify-self: center;
+      }
+
+    } 
 </style>

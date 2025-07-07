@@ -2,19 +2,12 @@
 
 :root{
     --primary-color: #10212b;
-    --lightgray-color: #142935;
+    --lightgray-color: #1e3746;
     --cells-color: #122530b7;
     --green-color: #8fa464;
     --orange-color: #9b8149;
     --wrong-letter: #0e1a20;
     --light-color: #effbdb;
-}
-
-#app {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
 }
 
 *{
@@ -28,6 +21,13 @@
     color: var(--light-color);
 }
 
+#app{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
 html{
     background-color: var(--primary-color);
 }
@@ -37,12 +37,19 @@ body{
     height: 100svh;
 }
 
+main{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
 .rows-container{
-    justify-self: center;
     display: flex;
     flex-direction: column;
+    margin: auto;
     gap: 10px;
     margin-top: 30px;
+    width: fit-content;
 }
 
 input[type="text"]{
@@ -117,7 +124,7 @@ input.flip {
 
 
 .keyboard{
-    width: 90%;
+    width: 40%;
     height: 200px;
     display: flex;
     flex-direction: column;
@@ -129,17 +136,27 @@ input.flip {
     margin-top: 20px;
 }
 
-.key{
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    margin: 0px 5px;
-    border-radius: 6px;
-    border: none;
-    font-size: 20px;
-    background-color: var(--lightgray-color);
-    text-decoration: none;
-    outline: none;
+.keyboard-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-self: center;
+  justify-self: center;
+}
+
+.key {
+  flex: 1 1 0;             /* si espandono equamente */         /* limite massimo (opzionale) */
+  width: 20px;            /* consente il wrapping */
+  height: 50px;
+  margin: 0px 3px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  opacity: 0.5;
 }
 
 .key:hover{

@@ -25,4 +25,14 @@
     right: 10px;
     font-size: 20px;
   }
+
+  @media (max-width: 1200px){
+    h1{
+      font-size: 50px;
+    }
+
+    span{
+      font-size: 14px;
+    }
+  }
 </style>
