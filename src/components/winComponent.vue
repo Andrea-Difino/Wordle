@@ -12,6 +12,9 @@ function refreshPage() {
     <div id="win-box">
         <h2>HAI VINTO!</h2>
         <span>La parola era <span>{{ parola }}</span></span>
+        <a v-bind:href="'https://www.treccani.it/vocabolario/ricerca/' + parola.toLowerCase()" target="_blank">
+            Cerca su Treccani
+        </a>
         <button v-on:click="refreshPage">GIOCA ANCORA</button>
     </div>
 </template>
