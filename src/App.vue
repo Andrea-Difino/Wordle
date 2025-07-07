@@ -3,12 +3,13 @@ import { onMounted, watch, ref } from 'vue';
 import { wordsList, random} from './lib/get-word'
 import WelcomeItem from './components/Header.vue';
 import WinItem from './components/winComponent.vue';
-
+import LostItem from './components/loseComponent.vue';
 
 let activeInputs = [];
 let rows = [];
 let keys = [];
 const win = ref(false)
+const lose = ref(false)
 const activeRow = ref(0);
 const enter = ref(false);
 const backspace = ref(false);
@@ -39,7 +40,7 @@ watch(enter, async (val) => {
         changeRow(activeRow.value, activeRow.value + 1);
       }, 1600);
     }else{
-      //mettere cosa succede se la parola non è contenuta nella lista
+      alert("la parola non esiste")
     }
   }
 });
@@ -130,6 +131,7 @@ async function changeActiveInputs(){
 
 async function changeRow(prevRow, newRow){
   if(newRow >= 6){
+    lose.value = true
     return;
   }
 
@@ -223,7 +225,7 @@ onMounted(async () => {
   </header>
 
   <WinItem v-if="win" :parola="secretWord"/>
-
+  <LostItem v-if="lose" :parola="secretWord"/>
   <main>
         <div class="rows-container">
             <div class="row_0 active">

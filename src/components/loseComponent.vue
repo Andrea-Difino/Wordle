@@ -9,8 +9,8 @@ function refreshPage() {
 </script>
 
 <template>
-    <div id="win-box">
-        <h2>HAI VINTO!</h2>
+    <div id="lose-box">
+        <h2>HAI PERSO!</h2>
         <span>La parola era <span>{{ parola }}</span></span>
         <a v-bind:href="'https://www.treccani.it/vocabolario/ricerca/' + parola.toLowerCase()" target="_blank">
             Cerca su Treccani
@@ -20,7 +20,7 @@ function refreshPage() {
 </template>
 
 <style scoped>
-    #win-box{
+    #lose-box{
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -36,18 +36,19 @@ function refreshPage() {
         z-index: 100;
         border-radius: 20px;
         filter: blur(1.5);
+        backdrop-filter: blur(5px);
         opacity: 0.9;
     }
 
-    #win-box span{
+    #lose-box span{
         display: block;
     }
 
-    #win-box span span{
+    #lose-box span span{
         color: #8fa464;
     }
 
-    #win-box button{
+    #lose-box button{
         border-radius: 10px;
         outline: none;
         border: 1.5px solid white;
