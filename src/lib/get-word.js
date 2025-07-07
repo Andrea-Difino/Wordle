@@ -1,4 +1,5 @@
-[
+
+const wordsList = [
   "ATATE",
   "ATATI",
   "ATATO",
@@ -7761,4 +7762,8 @@
   "ZURLO",
   "ZURRI",
   "ZURRO"
-]
+];
+
+const random = wordsList[Math.floor(Math.random() * wordsList.length)];
+
+export{wordsList, random}

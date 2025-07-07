@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, watch, ref } from 'vue';
+import { wordsList, random} from './lib/get-word'
 import WelcomeItem from './components/Header.vue';
 import WinItem from './components/winComponent.vue';
+
 
 let activeInputs = [];
 let rows = [];
@@ -10,10 +12,9 @@ const win = ref(false)
 const activeRow = ref(0);
 const enter = ref(false);
 const backspace = ref(false);
-const words = ref()
-let secretWord = ""
+const words = ref(wordsList)
+let secretWord = random
 
-console.log(keys)
 
 watch(enter, async (val) => {
   if(val){
@@ -174,11 +175,6 @@ onMounted(async () => {
   rows = document.querySelectorAll('.rows-container > div');
   activeInputs = activeRowElement.querySelectorAll('input');
   keys = document.querySelectorAll('.key:not(.enter):not(.back)');
-  console.log(keys)
-  const res = await fetch('/api/get-word');
-  const data = await res.json();
-  secretWord = data.secret;
-  words.value = data.wordList;
   // EVENTI TASTIERA FISICA
   for (let i = 0; i < 6; i++) {
     const row = document.querySelector(`.row_${i}`);
