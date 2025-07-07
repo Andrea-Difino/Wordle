@@ -11,7 +11,10 @@ exports.handler = async function(event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ secret: random.toUpperCase() }),
+      body: JSON.stringify({
+        secret: random.toUpperCase(),
+        wordList: parole
+      }),
     };
   } catch (err) {
     console.error('Errore funzione get-word:', err);

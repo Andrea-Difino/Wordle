@@ -13,6 +13,7 @@ const backspace = ref(false);
 const words = ref(['PESCA', 'PROVA', 'SEDIA', 'GRAPE', 'LEMON','NARDO', 'PIEDE', 'PIEDI'])
 let secretWord = ""
 
+console.log(keys)
 
 watch(enter, async (val) => {
   if(val){
@@ -78,10 +79,14 @@ async function setInputsStyle(userWord) {
       setTimeout(() => {
         if (userWord[i] === secretWord[i]) {
           input.classList.add('right_pos_let');
+          updateKeyColor(userWord[i], 'right_pos_let');
+
         } else if (secretWord.includes(userWord[i])) {
           input.classList.add('right_let');
+          updateKeyColor(userWord[i], 'right_let');
         } else {
           input.classList.add('wrong_let');
+          updateKeyColor(userWord[i], 'wrong_key_let');
         }
       }, 300); // metà durata flip
     }, i * 400);
@@ -92,6 +97,17 @@ async function setInputsStyle(userWord) {
       userWin();
     }, 2100);
   }
+}
+
+function updateKeyColor(letter, className) {
+  // Converte keys in array se non lo è già
+  const keysArray = Array.from(keys);
+
+  const key = keysArray.find(button => button.textContent.toLowerCase() === letter.toLowerCase());
+  if (!key) return;
+
+  key.classList.remove('right_pos_let', 'right_let', 'wrong_let');
+  key.classList.add(className);
 }
 
 async function userWin(){
@@ -158,10 +174,11 @@ onMounted(async () => {
   rows = document.querySelectorAll('.rows-container > div');
   activeInputs = activeRowElement.querySelectorAll('input');
   keys = document.querySelectorAll('.key:not(.enter):not(.back)');
+  console.log(keys)
   const res = await fetch('/api/get-word');
   const data = await res.json();
   secretWord = data.secret;
-  console.log(secretWord)
+  words.value = data.wordList;
   // EVENTI TASTIERA FISICA
   for (let i = 0; i < 6; i++) {
     const row = document.querySelector(`.row_${i}`);
@@ -266,12 +283,9 @@ onMounted(async () => {
                 <button class="key">T</button>
                 <button class="key">Y</button>
                 <button class="key">U</button>
-                <button class="key">I</button>
                 <button class="key">O</button>
                 <button class="key">M</button>
-                <button class="key">P</button>
-                
-                
+                <button class="key">P</button>          
             </div>
             <div class="keyboard-row">
                 <button class="key">A</button>

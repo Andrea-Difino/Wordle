@@ -7,6 +7,7 @@
     --green-color: #8fa464;
     --orange-color: #9b8149;
     --wrong-letter: #0e1a20;
+    --wrong-key-letter: #455d69;
     --light-color: #effbdb;
 }
 
@@ -102,6 +103,11 @@ input[type="text"]:focus{
 .wrong_let{
     background-color: var(--wrong-letter)!important;
     border: none;
+}
+
+.wrong_key_let{
+  background-color: var(--wrong-key-letter)!important;
+  color: var(--light-color);
 }
 
 input.flip {
