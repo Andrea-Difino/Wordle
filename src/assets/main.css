@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap');
 
 :root{
-    --primary-color: #1a1a1a;
-    --lightgray-color: #2e2e2e;
-    --cells-color: #1c1e1f;
-    --green-color: #51e058;
-    --orange-color: #e6901f;
-    --light-color: #d9d9d9;
+    --primary-color: #10212b;
+    --lightgray-color: #142935;
+    --cells-color: #122530b7;
+    --green-color: #8fa464;
+    --orange-color: #9b8149;
+    --wrong-letter: #0e1a20;
+    --light-color: #effbdb;
 }
 
 #app {
@@ -46,22 +47,73 @@ body{
 
 input[type="text"]{
     color: var(--light-color);
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
     margin: 0 5px;
-    font-size: 40px;
-    line-height: 70px;
+    font-size: 35px;
+    line-height: 60px;
     text-align: center;
     text-transform: uppercase;
     background-color: var(--cells-color);
     border: 2px solid var(--lightgray-color);
     caret-color: transparent;
+    pointer-events: none;
 }
 
 input[type="text"]:focus{
   outline: none;
 }
+
+.pop {
+  animation: popAnim 150ms ease-in-out;
+}
+
+@keyframes popAnim {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.right_pos_let{
+    background-color: var(--green-color)!important;
+    border: none;
+}
+
+.right_let{
+    background-color: var(--orange-color)!important;
+    border: none;
+}
+
+.wrong_let{
+    background-color: var(--wrong-letter)!important;
+    border: none;
+}
+
+input.flip {
+  animation: flipAnim 600ms ease-in-out forwards;
+  transform-style: preserve-3d;
+}
+
+@keyframes flipAnim {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+    background-color: var(--cells-color);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
 
 
 .keyboard{

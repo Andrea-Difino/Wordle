@@ -3,22 +3,25 @@ import { onMounted, watch, ref } from 'vue';
 import WelcomeItem from './components/Header.vue';
 
 
-let inputs = [];
+let activeInputs = [];
 let rows = [];
 let keys = [];
+const win = ref(false)
 const activeRow = ref(0);
 const enter = ref(false);
 const backspace = ref(false);
-const words = ref(['PESCA', 'BANAN', 'CHERRY', 'GRAPE', 'LEMON',])
+const words = ref(['PESCA', 'BANAN', 'CHERRY', 'GRAPE', 'LEMON','RAVAN'])
+const secretWord = "BANAN"
 
 
-watch(enter, (val) => {
+watch(enter, async (val) => {
   if(val){
+    console.log(val)
     enter.value = false;
     let word = "";
     let valid = true;
 
-    inputs.forEach(input => {
+    activeInputs.forEach(input => {
       if (input.value === '') {
         valid = false;
         return;
@@ -29,7 +32,12 @@ watch(enter, (val) => {
     if (!valid) return;
 
     if (words.value.includes(word)) {
-      changeRow(activeRow.value, activeRow.value + 1);
+      await setInputsStyle(word);
+      setTimeout(() => {
+        changeRow(activeRow.value, activeRow.value + 1);
+      }, 1600);
+    }else{
+      //mettere cosa succede se la parola non è contenuta nella lista
     }
   }
 });
@@ -37,21 +45,56 @@ watch(enter, (val) => {
 watch(backspace, (val) => {
   if (val) {
     backspace.value = false;
-    const currentRowInputs = document.querySelectorAll(`.row_${activeRow.value} input`);
-    let index = Array.from(currentRowInputs).findLastIndex(input => input.value !== '');
+    let index = Array.from(activeInputs).findLastIndex(input => input.value !== '');
     if (index === -1) index = 0;
-    currentRowInputs[index].value = '';
+    activeInputs[index].value = '';
     if (index > 0) {
-      currentRowInputs[index - 1].focus();
+      activeInputs[index - 1].focus();
     } else {
-      currentRowInputs[0].focus();
+      activeInputs[0].focus();
     }
   }
 });
 
+async function setInputsStyle(userWord) {
+  const secret = secretWord.split('');
+  const guess = userWord.split('');
+
+  guess.forEach((ch, i) => {
+    if (ch === secret[i]) {
+      secret[i] = null;
+      guess[i] = null;
+    }else if (ch && secret.includes(ch)) {
+      secret[secret.indexOf(ch)] = null;
+    }
+  });
+
+  // Ora colora le caselle con delay progressivo
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      const input = activeInputs[i];
+      input.classList.remove('flip');
+      input.classList.add('flip');
+      setTimeout(() => {
+        if (userWord[i] === secretWord[i]) {
+          input.classList.add('right_pos_let');
+        } else if (secretWord.includes(userWord[i])) {
+          input.classList.add('right_let');
+        } else {
+          input.classList.add('wrong_let');
+        }
+      }, 300); // metà durata flip
+    }, i * 400);
+  } 
+  
+  if (userWord === secretWord) {
+    userWin();
+  }
+}
+
 async function changeActiveInputs(){
   rows.forEach(row => {
-    inputs = row.querySelectorAll('input');
+    let inputs = row.querySelectorAll('input');
     inputs.forEach(input => {
       if (row.classList.contains('active')) {
         input.disabled = false;
@@ -71,14 +114,44 @@ async function changeRow(prevRow, newRow){
   rows[prevRow].classList.remove('active')
   rows[newRow].classList.add('active')
   activeRow.value = newRow;
-  changeActiveInputs(inputs);
-  inputs = rows[newRow].querySelectorAll('input');
+  changeActiveInputs();
+  activeInputs = rows[newRow].querySelectorAll('input');
 }
+
+function handleLetterInput(letter) {
+  if (!activeInputs) return;
+
+  for (let input of activeInputs) {
+    if (input.value === '') {
+      input.value = letter.toUpperCase();
+
+      input.classList.remove('pop'); // resetta in caso di inserimento rapido
+      void input.offsetWidth;         // forza il reflow (trucco per riattivare l'animazione)
+      input.classList.add('pop');
+
+      if (input.nextElementSibling) input.nextElementSibling.focus();
+      break;
+    }
+  }
+}
+
+document.addEventListener("keyup", (e) => {
+  if (/^[a-zA-Z]$/.test(e.key)) {
+    e.preventDefault();
+    handleLetterInput(e.key);
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    enter.value = true;
+  }
+});
 
 onMounted(() => {
   const activeRowElement = document.querySelector(`.row_${activeRow.value}`);
   rows = document.querySelectorAll('.rows-container > div');
-  inputs = activeRowElement.querySelectorAll('input');
+  activeInputs = activeRowElement.querySelectorAll('input');
   keys = document.querySelectorAll('.key:not(.enter):not(.back)');
 
   // EVENTI TASTIERA FISICA
@@ -91,19 +164,19 @@ onMounted(() => {
       input.setAttribute('autocorrect', 'off');
       input.setAttribute('autocapitalize', 'off');
       input.setAttribute('spellcheck', 'false');
-      input.pattern = "[A-Za-z]";
-      input.addEventListener('keyup', (e) => {
+      input.readOnly = true;
+      input.tabIndex = -1;
+      input.setAttribute('inputmode', 'none');
+      input.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace') {
-          input.value = '';
-          if (input.previousElementSibling) {
+          e.preventDefault();
+
+          if (input.value !== '') {
+            input.value = '';
+          } else if (input.previousElementSibling) {
             input.previousElementSibling.focus();
+            input.previousElementSibling.value = '';
           }
-        } else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
-          
-          if (input.nextElementSibling) {
-            input.nextElementSibling.focus();
-          }
-          input.value = e.key.toUpperCase();
         }
       });
     });
@@ -112,14 +185,7 @@ onMounted(() => {
   // EVENTI TASTIERA VIRTUALE (solo 1 volta)
   keys.forEach(key => {
     key.addEventListener('click', (e) => {
-      const activeInputs = document.querySelector('.rows-container .active').querySelectorAll('input');
-      for (let input of activeInputs) {
-        if (input.value === '') {
-          input.value = e.target.innerText;
-          if (input.nextElementSibling) input.nextElementSibling.focus();
-          break;
-        }
-      }
+      handleLetterInput(e.target.innerText);
     });
   });
 });
@@ -135,7 +201,7 @@ onMounted(() => {
   <main>
         <div class="rows-container">
             <div class="row_0 active">
-                <input type="text" name="_1" id="" maxlength="1" data-animation="pop">
+                <input type="text" name="_1" id="" maxlength="1">
                 <input type="text" name="_2" id="" maxlength="1">
                 <input type="text" name="_3" id="" maxlength="1">
                 <input type="text" name="_4" id="" maxlength="1">
@@ -209,14 +275,14 @@ onMounted(() => {
                 <button class="key">A'</button>
             </div>
             <div class="keyboard-row">
-                <button class="key enter" style="width: 80px;" @click.enter="enter = true">ENTER</button>
+                <button class="key enter" style="width: 80px;" @click="enter = true">ENTER</button>
                 <button class="key">C</button>
                 <button class="key">I</button>
                 <button class="key">F</button>
                 <button class="key">G</button>
                 <button class="key">H</button>
                 <button class="key">Z</button>
-                <button class="key back" style="width: fit-content; padding: 0px 15px" @click.enter="backspace = true">BACKSPACE</button>
+                <button class="key back" style="width: fit-content; padding: 0px 15px" @click="backspace = true">BACKSPACE</button>
             </div>
         </div>
     </main>
