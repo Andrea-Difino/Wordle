@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../../Desktop/projects/wordle/Wordle/netlify/functions/get-word.js"],
+  "sourceRoot": "C:/Users/adifi/AppData/Local/Temp/tmp-7936-NsSUVOPU4V3R",
+  "sourcesContent": ["const fs = require('fs');\r\nconst path = require('path');\r\n\r\nexports.handler = async function(event, context) {\r\n  try {\r\n    const filePath = path.join(__dirname, 'parole5lettere.txt');\r\n    console.log(__dirname)\r\n    const parole = fs.readFileSync(filePath, 'utf8').split('\\n').map(p => p.trim());\r\n\r\n    const random = parole[Math.floor(Math.random() * parole.length)];\r\n\r\n    return {\r\n      statusCode: 200,\r\n      body: JSON.stringify({\r\n        secret: random.toUpperCase(),\r\n        wordList: parole\r\n      }),\r\n    };\r\n  } catch (err) {\r\n    console.error('Errore funzione get-word:', err);\r\n    return {\r\n      statusCode: 500,\r\n      body: JSON.stringify({ error: err.message }),\r\n    };\r\n  }\r\n};"],
+  "mappings": ";AAAA,IAAM,KAAK,QAAQ,IAAI;AACvB,IAAM,OAAO,QAAQ,MAAM;AAE3B,QAAQ,UAAU,eAAe,OAAO,SAAS;AAC/C,MAAI;AACF,UAAM,WAAW,KAAK,KAAK,WAAW,oBAAoB;AAC1D,YAAQ,IAAI,SAAS;AACrB,UAAM,SAAS,GAAG,aAAa,UAAU,MAAM,EAAE,MAAM,IAAI,EAAE,IAAI,OAAK,EAAE,KAAK,CAAC;AAE9E,UAAM,SAAS,OAAO,KAAK,MAAM,KAAK,OAAO,IAAI,OAAO,MAAM,CAAC;AAE/D,WAAO;AAAA,MACL,YAAY;AAAA,MACZ,MAAM,KAAK,UAAU;AAAA,QACnB,QAAQ,OAAO,YAAY;AAAA,QAC3B,UAAU;AAAA,MACZ,CAAC;AAAA,IACH;AAAA,EACF,SAAS,KAAK;AACZ,YAAQ,MAAM,6BAA6B,GAAG;AAC9C,WAAO;AAAA,MACL,YAAY;AAAA,MACZ,MAAM,KAAK,UAAU,EAAE,OAAO,IAAI,QAAQ,CAAC;AAAA,IAC7C;AAAA,EACF;AACF;",
+  "names": []
+}

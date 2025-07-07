@@ -10,7 +10,7 @@ const win = ref(false)
 const activeRow = ref(0);
 const enter = ref(false);
 const backspace = ref(false);
-const words = ref(['PESCA', 'PROVA', 'SEDIA', 'GRAPE', 'LEMON','NARDO', 'PIEDE', 'PIEDI'])
+const words = ref()
 let secretWord = ""
 
 console.log(keys)
