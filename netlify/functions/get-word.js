@@ -4,6 +4,7 @@ const path = require('path');
 exports.handler = async function(event, context) {
   try {
     const filePath = path.join(__dirname, 'parole5lettere.txt');
+    console.log(__dirname)
     const parole = fs.readFileSync(filePath, 'utf8').split('\n').map(p => p.trim());
 
     const random = parole[Math.floor(Math.random() * parole.length)];

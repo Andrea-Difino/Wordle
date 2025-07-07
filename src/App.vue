@@ -161,7 +161,7 @@ onMounted(async () => {
   const res = await fetch('/api/get-word');
   const data = await res.json();
   secretWord = data.secret;
-  
+  console.log(secretWord)
   // EVENTI TASTIERA FISICA
   for (let i = 0; i < 6; i++) {
     const row = document.querySelector(`.row_${i}`);
