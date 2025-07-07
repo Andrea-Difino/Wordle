@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../../Desktop/projects/wordle/Wordle/netlify/functions/get-word.js"],
+  "sourceRoot": "C:/Users/adifi/AppData/Local/Temp/tmp-11600-KdgdgbWBwCOF",
+  "sourcesContent": ["const path = require('path');\r\nconst fs = require('fs');\r\n\r\nexports.handler = async () => {\r\n  const filePath = path.join(__dirname, 'parole5lettere.json');\r\n  const raw = fs.readFileSync(filePath, 'utf8');\r\n  const wordList = JSON.parse(raw); // ottieni l'array\r\n\r\n  const random = wordList[Math.floor(Math.random() * wordList.length)];\r\n\r\n  return {\r\n    statusCode: 200,\r\n    body: JSON.stringify({\r\n      secret: random.toUpperCase(),\r\n      wordList: wordList.map(w => w.toUpperCase()),\r\n    }),\r\n  };\r\n};"],
+  "mappings": ";AAAA,IAAM,OAAO,QAAQ,MAAM;AAC3B,IAAM,KAAK,QAAQ,IAAI;AAEvB,QAAQ,UAAU,YAAY;AAC5B,QAAM,WAAW,KAAK,KAAK,WAAW,qBAAqB;AAC3D,QAAM,MAAM,GAAG,aAAa,UAAU,MAAM;AAC5C,QAAM,WAAW,KAAK,MAAM,GAAG;AAE/B,QAAM,SAAS,SAAS,KAAK,MAAM,KAAK,OAAO,IAAI,SAAS,MAAM,CAAC;AAEnE,SAAO;AAAA,IACL,YAAY;AAAA,IACZ,MAAM,KAAK,UAAU;AAAA,MACnB,QAAQ,OAAO,YAAY;AAAA,MAC3B,UAAU,SAAS,IAAI,OAAK,EAAE,YAAY,CAAC;AAAA,IAC7C,CAAC;AAAA,EACH;AACF;",
+  "names": []
+}
