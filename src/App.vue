@@ -10,8 +10,8 @@ const win = ref(false)
 const activeRow = ref(0);
 const enter = ref(false);
 const backspace = ref(false);
-const words = ref(['PESCA', 'BANAN', 'CHERRY', 'GRAPE', 'LEMON','RAVAN'])
-const secretWord = "BANAN"
+const words = ref(['PESCA', 'PROVA', 'SEDIA', 'GRAPE', 'LEMON','NARDO', 'PIEDE', 'PIEDI'])
+let secretWord = ""
 
 
 watch(enter, async (val) => {
@@ -113,7 +113,6 @@ async function changeActiveInputs(){
 
 async function changeRow(prevRow, newRow){
   if(newRow >= 6){
-    console.log('Game Over');
     return;
   }
 
@@ -154,12 +153,15 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
   const activeRowElement = document.querySelector(`.row_${activeRow.value}`);
   rows = document.querySelectorAll('.rows-container > div');
   activeInputs = activeRowElement.querySelectorAll('input');
   keys = document.querySelectorAll('.key:not(.enter):not(.back)');
-
+  const res = await fetch('/api/get-word');
+  const data = await res.json();
+  secretWord = data.secret;
+  
   // EVENTI TASTIERA FISICA
   for (let i = 0; i < 6; i++) {
     const row = document.querySelector(`.row_${i}`);
