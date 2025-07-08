@@ -16,7 +16,6 @@ const enter = ref(false);
 const backspace = ref(false);
 const words = ref(wordsList)
 let secretWord = random
-console.log(secretWord)
 
 watch(enter, async (val) => {
   if(val){
