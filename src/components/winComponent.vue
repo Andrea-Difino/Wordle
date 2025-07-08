@@ -36,6 +36,7 @@ function refreshPage() {
         z-index: 100;
         border-radius: 20px;
         filter: blur(1.5);
+        backdrop-filter: blur(5px);
         opacity: 0.9;
     }
 

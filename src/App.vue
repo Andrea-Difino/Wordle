@@ -4,6 +4,7 @@ import { wordsList, random} from './lib/get-word'
 import WelcomeItem from './components/Header.vue';
 import WinItem from './components/winComponent.vue';
 import LostItem from './components/loseComponent.vue';
+import confetti from 'canvas-confetti';
 
 let activeInputs = [];
 let rows = [];
@@ -15,7 +16,7 @@ const enter = ref(false);
 const backspace = ref(false);
 const words = ref(wordsList)
 let secretWord = random
-
+console.log(secretWord)
 
 watch(enter, async (val) => {
   if(val){
@@ -36,9 +37,10 @@ watch(enter, async (val) => {
 
     if (words.value.includes(word)) {
       await setInputsStyle(word);
+      await checkWin(word, activeRow.value + 1);
       setTimeout(() => {
         changeRow(activeRow.value, activeRow.value + 1);
-      }, 1600);
+      }, 1700);
     }else{
       alert("la parola non esiste")
     }
@@ -93,12 +95,31 @@ async function setInputsStyle(userWord) {
       }, 300); // metà durata flip
     }, i * 400);
   } 
-  
-  if (userWord === secretWord) {
-    setTimeout(() => {
-      userWin();
-    }, 2100);
-  }
+}
+
+async function checkWin(word, nextRowValue){
+    if (word === secretWord) {
+      setTimeout(() => {
+        win.value = true
+        showConfetti();
+      }, 2100);
+      return 
+    }
+    
+    if (nextRowValue >= 6 && word !== secretWord) {
+      setTimeout(() => {
+        lose.value = true
+      }, 2100);
+      return 
+    }
+}
+
+function showConfetti() {
+  confetti({
+    particleCount: 130,
+    spread: 60,
+    origin: { y: 0.6 }
+  });
 }
 
 function updateKeyColor(letter, className) {
@@ -110,10 +131,6 @@ function updateKeyColor(letter, className) {
 
   key.classList.remove('right_pos_let', 'right_let', 'wrong_let');
   key.classList.add(className);
-}
-
-async function userWin(){
-  win.value = true;
 }
 
 async function changeActiveInputs(){
@@ -130,9 +147,8 @@ async function changeActiveInputs(){
 }
 
 async function changeRow(prevRow, newRow){
-  if(newRow >= 6){
-    lose.value = true
-    return;
+  if (newRow >= 6) {
+    return
   }
 
   rows[prevRow].classList.remove('active')
