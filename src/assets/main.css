@@ -11,6 +11,11 @@
     --light-color: #effbdb;
 }
 
+button, .button, .no-zoom {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 *{
     margin: 0;
     padding: 0;
