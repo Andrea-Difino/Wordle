@@ -19,7 +19,6 @@ let secretWord = random
 
 watch(enter, async (val) => {
   if(val){
-    console.log(val)
     enter.value = false;
     let word = "";
     let valid = true;
